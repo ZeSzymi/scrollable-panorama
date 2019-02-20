@@ -1,0 +1,168 @@
+<head>
+	<title>Filip Dybjerg</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<script type="text/javascript">
+
+		let newImage = null;
+
+		class image {
+			maxLeft;
+			maxRight;
+			leftInterval;
+			rightInterval;
+			model;
+			position;
+			constructor(maxLeft, maxRight, model) {
+				this.maxLeft = maxLeft
+				this.maxRight = maxRight
+				this.leftInterval = null
+				this.rightInterval = null
+				this.model = model
+				model.style.left = '-1000px';
+				this.position = parseInt(this.model.style.left);
+				moveLeft = () => {
+					if (this.leftInterval === null) {
+						this.rightInterval !== null ? clearInterval(this.rightInterval) : this.rightInterval = null;
+						this.leftInterval = setInterval(() => {
+							if (parseInt(this.model.style.left) < this.maxLeft) {
+								console.log(this.model.style.left);
+								this.model.style.left = this.position.toString() + 'px'; this.position += 1
+							} else {
+								clearInterval(this.leftInterval);
+							}
+						}, 20);
+					} else {
+						clearInterval(this.leftInterval);
+						this.leftInterval = null;
+					}
+				}
+
+				moveRight = () => {
+
+					this.leftInterval !== null ? clearInterval(this.leftInterval) : this.leftInterval = null;
+					if (this.rightInterval === null) {
+						this.rightInterval = setInterval(() => {
+							if (parseInt(this.model.style.left) < this.maxRight) {
+								this.model.style.left = this.position.toString() + 'px'; this.position -= 1
+							} else {
+								clearInterval(this.rightInterval);
+							}
+						}, 20);
+					} else {
+						clearInterval(this.rightInterval);
+						this.rightInterval = null;
+					}
+
+				}
+			}
+		}
+
+
+
+
+		window.addEventListener("load", () => {
+			newImage = new image(5000, 5000, document.getElementById('panorama'));
+		});
+
+		function moveLeft() {
+			image.moveLeft();
+		}
+
+		function moveRight() {
+			image.moveRight();
+		}
+
+	</script>
+	<style type="text/css">
+		body {
+			background: #595959;
+			text-align: center;
+			overflow: hidden;
+		}
+
+		h1 {
+			color: white;
+			margin-bottom: 2em;
+			font-family: Verdana;
+			font-weight: normal;
+			font-size: 25px;
+		}
+
+		#page {
+			text-align: center;
+			color: white;
+		}
+
+		#page a {
+			color: white;
+		}
+
+		#page .panorama-viewport {
+			border: 20px solid #414141;
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+		#page p {
+			margin-bottom: 1em;
+		}
+
+		.advenced-panorama {
+			position: absolute;
+			left: -2000px;
+			width: 2448px;
+			height: 705px;
+		}
+
+		.wide-image {
+			position: absolute;
+			width: 2448px;
+			height: 705px;
+			left: 0px;
+			top: 0px;
+		}
+
+		.my-custom-modal {
+			position: fixed;
+			width: 40vw;
+			height: 40vh;
+			left: 30vw;
+			top: 30vh;
+			z-index: 5000;
+			background-color: white;
+			display: none;
+		}
+
+		.modal {
+			position: absolute; 
+			width: 200px; height: 200px; left: 1000px; top: 200px; 
+		}
+
+		.modal:hover {
+			background-color: #acacac59;
+			cursor: pointer;
+		}
+	</style>
+</head>
+
+<body>
+
+	<div>
+		<div class="advenced-panorama" id="panorama">
+			<img src="background.png" class="wide-image" usemap="imagemap" />
+			<div class="modal"> aa </div>
+
+		</div>
+
+	</div>
+	<div style="width:100%; height:705px">
+
+	</div>
+	<button class="button" onclick="moveRight()">
+		< </button> <button class="button" onclick="moveLeft()"> >
+	</button>
+
+</body>
+
+</html>
