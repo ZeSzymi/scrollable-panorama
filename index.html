@@ -1,5 +1,5 @@
 <head>
-	<title>Filip Dybjerg</title>
+	<title>Scrollable panorama</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
 	<script type="text/javascript">
@@ -13,48 +13,64 @@
 			rightInterval;
 			model;
 			position;
-			constructor(maxLeft, maxRight, model) {
+			constructor(maxLeft, maxRight, model, styleLeft) {
 				this.maxLeft = maxLeft
 				this.maxRight = maxRight
 				this.leftInterval = null
 				this.rightInterval = null
 				this.model = model
-				model.style.left = '-1000px';
+				model.style.left = styleLeft;
 				this.position = parseInt(this.model.style.left);
-				moveLeft = () => {
-					if (this.leftInterval === null) {
-						this.rightInterval !== null ? clearInterval(this.rightInterval) : this.rightInterval = null;
-						this.leftInterval = setInterval(() => {
-							if (parseInt(this.model.style.left) < this.maxLeft) {
-								console.log(this.model.style.left);
-								this.model.style.left = this.position.toString() + 'px'; this.position += 1
-							} else {
-								clearInterval(this.leftInterval);
-							}
-						}, 20);
-					} else {
-						clearInterval(this.leftInterval);
-						this.leftInterval = null;
-					}
+			}
+
+			moveRight = () => {
+				if (this.leftInterval === null) {
+					this.rightInterval !== null ? this.clearCustomRightInterval() : this.rightInterval = null;
+					this.leftInterval = setInterval(() => {
+						if (parseInt(this.model.style.left) < this.maxLeft) {
+							this.model.style.left = this.position.toString() + 'px'; this.position += 1
+						} else {
+							this.clearCustomLeftInterval(this.leftInterval)
+						}
+					}, 20);
+				} else {
+					this.clearCustomLeftInterval(this.leftInterval)
 				}
+			}
 
-				moveRight = () => {
+			moveLeft = () => {
 
-					this.leftInterval !== null ? clearInterval(this.leftInterval) : this.leftInterval = null;
-					if (this.rightInterval === null) {
-						this.rightInterval = setInterval(() => {
-							if (parseInt(this.model.style.left) < this.maxRight) {
-								this.model.style.left = this.position.toString() + 'px'; this.position -= 1
-							} else {
-								clearInterval(this.rightInterval);
-							}
-						}, 20);
-					} else {
-						clearInterval(this.rightInterval);
-						this.rightInterval = null;
-					}
-
+				this.leftInterval !== null ? this.clearCustomLeftInterval() : this.leftInterval = null;
+				if (this.rightInterval === null) {
+					this.rightInterval = setInterval(() => {
+						if (parseInt(this.model.style.left) > this.maxRight) {
+							this.model.style.left = this.position.toString() + 'px'; this.position -= 1
+						} else {
+							this.clearCustomRightInterval();
+						}
+					}, 20);
+				} else {
+					this.clearCustomRightInterval();
 				}
+			}
+
+			clearCustomLeftInterval() {
+				if (this.leftInterval !== null) {
+					clearInterval(this.leftInterval);
+					this.leftInterval = null;
+				}
+			}
+
+			clearCustomRightInterval() {
+				if (this.rightInterval !== null) {
+					clearInterval(this.rightInterval);
+					this.rightInterval = null;
+				}
+			}
+
+			stop = () => {
+				this.clearCustomRightInterval();
+				this.clearCustomLeftInterval();
 			}
 		}
 
@@ -62,15 +78,19 @@
 
 
 		window.addEventListener("load", () => {
-			newImage = new image(5000, 5000, document.getElementById('panorama'));
+			newImage = new image(0, -620, document.getElementById('panorama'), '-450px');
 		});
 
 		function moveLeft() {
-			image.moveLeft();
+			newImage.moveLeft();
 		}
 
 		function moveRight() {
-			image.moveRight();
+			newImage.moveRight();
+		}
+
+		function stop() {
+			newImage.stop();
 		}
 
 	</script>
@@ -81,38 +101,12 @@
 			overflow: hidden;
 		}
 
-		h1 {
-			color: white;
-			margin-bottom: 2em;
-			font-family: Verdana;
-			font-weight: normal;
-			font-size: 25px;
-		}
-
-		#page {
-			text-align: center;
-			color: white;
-		}
-
-		#page a {
-			color: white;
-		}
-
-		#page .panorama-viewport {
-			border: 20px solid #414141;
-			margin-left: auto;
-			margin-right: auto;
-		}
-
-		#page p {
-			margin-bottom: 1em;
-		}
-
 		.advenced-panorama {
 			position: absolute;
 			left: -2000px;
 			width: 2448px;
 			height: 705px;
+			z-index: 5;
 		}
 
 		.wide-image {
@@ -135,13 +129,76 @@
 		}
 
 		.modal {
-			position: absolute; 
-			width: 200px; height: 200px; left: 1000px; top: 200px; 
+			position: absolute;
+			width: 200px;
+			height: 200px;
+			left: 1000px;
+			top: 200px;
 		}
 
 		.modal:hover {
 			background-color: #acacac59;
 			cursor: pointer;
+		}
+
+		.button-move {
+			z-index: 10;
+			width: 33%;
+			height: 100%;
+			float: left;
+			background-color: rgba(138, 137, 137, 0.589);
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-size: 25px;
+			font-weight: bold;
+			cursor: pointer;
+		}
+		.button-stop {
+			z-index: 10;
+			width: 34%;
+			height: 100%;
+			float: left;
+			background-color: rgba(138, 137, 137, 0.589);
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-size: 25px;
+			font-weight: bold;
+			cursor: pointer;
+		}
+
+		.border-left {
+			position: fixed;
+			z-index: 100;
+			width: 100px;
+			background-color: #595959;
+			left: 0px;
+			height: 100%;
+		}
+
+		.border-right {
+			position: fixed;
+			z-index: 100;
+			width: 100px;
+			background-color: #595959;
+			right: 0px;
+			height: 100%;
+		}
+
+		.button-container {
+			position: fixed;
+			left: 100px;
+			z-index: 101;
+			height: 50px;
+			width: calc(100% - 200px);
+		}
+
+		.button-move:hover {
+			background-color: rgba(196, 196, 196, 0.589);
+		}
+		.button-stop:hover {
+			background-color: rgba(196, 196, 196, 0.589);
 		}
 	</style>
 </head>
@@ -156,12 +213,27 @@
 		</div>
 
 	</div>
-	<div style="width:100%; height:705px">
+	<div class="border-left"></div>
+	<div class="border-right"></div>
+	<div style="width:100%; height:655px">
 
 	</div>
-	<button class="button" onclick="moveRight()">
-		< </button> <button class="button" onclick="moveLeft()"> >
-	</button>
+	<div class="button-container">
+		<div class="button-move" onclick="moveRight()">
+			<div>
+				<<
+			</div> 
+		</div> 
+		<div class="button-stop" onclick="stop()">
+			 <div>==</div> 
+		</div>
+		<div class="button-move" onclick="moveLeft()">
+			<div>
+				>>
+			</div>
+		</div>
+		</div>
+
 
 </body>
 
