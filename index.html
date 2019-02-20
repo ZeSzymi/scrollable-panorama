@@ -77,9 +77,11 @@
 		class modal {
 			model;
 			modelText;
-			constructor(model, modelTextDiv) {
+			modelImage;
+			constructor(model, modelTextDiv, modelImage) {
 				this.model = model;
 				this.modelText = modelTextDiv;
+				this.modelImage = modelImage;
 			}
 
 			show() {
@@ -93,11 +95,15 @@
 			changeText(text) {
 				this.modelText.innerHTML = text;
 			}
+
+			changeImage(imageSrc) {
+				this.modelImage.src = imageSrc
+			}
 		}
 
 		window.addEventListener("load", () => {
 			newImage = new image(0, -620, document.getElementById('panorama'), '-450px');
-			newModal = new modal(document.getElementById('modal'), document.getElementById('modalText'))
+			newModal = new modal(document.getElementById('modal'), document.getElementById('modalText'), document.getElementById('modalImage'));
 		});
 
 		function moveLeft() {
@@ -112,9 +118,10 @@
 			newImage.stop();
 		}
 
-		function showModal(text) {
+		function showModal(text, imageSrc) {
 			newModal.show();
 			newModal.changeText(text);
+			newModal.changeImage(imageSrc);
 		}
 
 		function closeModal() {
@@ -247,7 +254,7 @@
 	<div>
 		<div class="advenced-panorama" id="panorama">
 			<img src="background.png" class="wide-image" usemap="imagemap" />
-			<div class="modal-button" onclick="showModal('hello world')">  </div>
+			<div class="modal-button" onclick="showModal('hello world', 'https://cdn.shopify.com/s/files/1/2256/4721/products/2522R_SIDE_1600x.png')">  </div>
 
 		</div>
 
@@ -275,6 +282,7 @@
 		<div id="modal" class="modal">
 			This is piano
 			<div id="modalText">MY TEXT</div>
+			<image id='modalImage' src='https://en.wikipedia.org/wiki/Guitar#/media/File:GuitareClassique5.png'></image>
 			<button onclick="closeModal()">Close</button>
 		</div>
 
