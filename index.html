@@ -5,7 +5,7 @@
 	<script type="text/javascript">
 
 		let newImage = null;
-
+		let newModal = null;
 		class image {
 			maxLeft;
 			maxRight;
@@ -32,7 +32,7 @@
 						} else {
 							this.clearCustomLeftInterval(this.leftInterval)
 						}
-					}, 20);
+					}, 15);
 				} else {
 					this.clearCustomLeftInterval(this.leftInterval)
 				}
@@ -48,7 +48,7 @@
 						} else {
 							this.clearCustomRightInterval();
 						}
-					}, 20);
+					}, 15);
 				} else {
 					this.clearCustomRightInterval();
 				}
@@ -74,11 +74,28 @@
 			}
 		}
 
+		class modal {
+			model;
+			constructor(model) {
+				this.model = model;
+			}
 
+			show() {
+				this.model.style.display = 'block';
+			}
 
+			close() {
+				this.model.style.display = 'none';
+			}
+
+			changeText(text) {
+				this.model.innerHTML = text;
+			}
+		}
 
 		window.addEventListener("load", () => {
 			newImage = new image(0, -620, document.getElementById('panorama'), '-450px');
+			newModal = new modal(document.getElementById('modal'))
 		});
 
 		function moveLeft() {
@@ -91,6 +108,14 @@
 
 		function stop() {
 			newImage.stop();
+		}
+
+		function showModal() {
+			newModal.show();
+		}
+
+		function closeModal() {
+			newModal.close();
 		}
 
 	</script>
@@ -128,15 +153,15 @@
 			display: none;
 		}
 
-		.modal {
+		.modal-button {
 			position: absolute;
-			width: 200px;
-			height: 200px;
-			left: 1000px;
-			top: 200px;
+			width: 400px;
+			height: 250px;
+			left: 210px;
+			top: 280px;
 		}
 
-		.modal:hover {
+		.modal-button:hover {
 			background-color: #acacac59;
 			cursor: pointer;
 		}
@@ -186,6 +211,17 @@
 			height: 100%;
 		}
 
+		.modal {
+			position: fixed;
+			height: 40vh;
+			width: 30vw;
+			left: 35vw;
+			top: 20vh;
+			background-color: white;
+			z-index: 102;
+			display: none;
+		}
+
 		.button-container {
 			position: fixed;
 			left: 100px;
@@ -208,7 +244,7 @@
 	<div>
 		<div class="advenced-panorama" id="panorama">
 			<img src="background.png" class="wide-image" usemap="imagemap" />
-			<div class="modal"> aa </div>
+			<div class="modal-button" onclick="showModal()">  </div>
 
 		</div>
 
@@ -233,7 +269,10 @@
 			</div>
 		</div>
 		</div>
-
+		<div id="modal" class="modal">
+			This is piano
+			<button onclick="closeModal()">Close</button>
+		</div>
 
 </body>
 
