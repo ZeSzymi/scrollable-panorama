@@ -76,8 +76,10 @@
 
 		class modal {
 			model;
-			constructor(model) {
+			modelText;
+			constructor(model, modelTextDiv) {
 				this.model = model;
+				this.modelText = modelTextDiv;
 			}
 
 			show() {
@@ -89,13 +91,13 @@
 			}
 
 			changeText(text) {
-				this.model.innerHTML = text;
+				this.modelText.innerHTML = text;
 			}
 		}
 
 		window.addEventListener("load", () => {
 			newImage = new image(0, -620, document.getElementById('panorama'), '-450px');
-			newModal = new modal(document.getElementById('modal'))
+			newModal = new modal(document.getElementById('modal'), document.getElementById('modalText'))
 		});
 
 		function moveLeft() {
@@ -110,8 +112,9 @@
 			newImage.stop();
 		}
 
-		function showModal() {
+		function showModal(text) {
 			newModal.show();
+			newModal.changeText(text);
 		}
 
 		function closeModal() {
@@ -244,7 +247,7 @@
 	<div>
 		<div class="advenced-panorama" id="panorama">
 			<img src="background.png" class="wide-image" usemap="imagemap" />
-			<div class="modal-button" onclick="showModal()">  </div>
+			<div class="modal-button" onclick="showModal('hello world')">  </div>
 
 		</div>
 
@@ -271,6 +274,7 @@
 		</div>
 		<div id="modal" class="modal">
 			This is piano
+			<div id="modalText">MY TEXT</div>
 			<button onclick="closeModal()">Close</button>
 		</div>
 
