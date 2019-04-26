@@ -163,7 +163,7 @@
 			display: none;
 		}
 
-		.modal-button {
+		.modal-button-piano {
 			position: absolute;
 			width: 400px;
 			height: 250px;
@@ -171,7 +171,20 @@
 			top: 280px;
 		}
 
-		.modal-button:hover {
+		.modal-button-notebook {
+			position: absolute;
+			width: 210px;
+			height: 150px;
+			left: 1200px;
+			top: 370px;
+		}
+
+		.modal-button-piano:hover {
+			background-color: #acacac59;
+			cursor: pointer;
+		}
+
+		.modal-button-notebook:hover {
 			background-color: #acacac59;
 			cursor: pointer;
 		}
@@ -189,6 +202,7 @@
 			font-weight: bold;
 			cursor: pointer;
 		}
+
 		.button-stop {
 			z-index: 10;
 			width: 34%;
@@ -223,13 +237,48 @@
 
 		.modal {
 			position: fixed;
-			height: 40vh;
-			width: 30vw;
-			left: 35vw;
-			top: 20vh;
-			background-color: white;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			height: 100vh;
+			width: 100vw;
+			top: 0px;
+			left: 0px;
+			background-color: rgba(68, 68, 68, 0.521);
 			z-index: 102;
 			display: none;
+		}
+
+		.modal-image {
+			width: 100px;
+		}
+
+		.modal-text {
+			color: white;
+			font-size: 25px;
+			padding-top: 50px;
+		}
+
+		.modal-button-in {
+			position: absolute;
+			right: 5px;
+			bottom: 5px;
+		}
+
+		.modal-in {
+			position: relative;
+			width: 100%;
+			height: 100%;
+			background-color: #595959;
+			border: 1px solid #222222;
+		}
+
+		.modal-in-absolute {
+			position: absolute;
+			width: 300px;
+			height: 500px;
+			left: calc(50vw - 150px);
+			top: 20vh;
 		}
 
 		.button-container {
@@ -243,6 +292,7 @@
 		.button-move:hover {
 			background-color: rgba(196, 196, 196, 0.589);
 		}
+
 		.button-stop:hover {
 			background-color: rgba(196, 196, 196, 0.589);
 		}
@@ -254,8 +304,12 @@
 	<div>
 		<div class="advenced-panorama" id="panorama">
 			<img src="background.png" class="wide-image" usemap="imagemap" />
-			<div class="modal-button" onclick="showModal('this is quitar', 'https://d1aeri3ty3izns.cloudfront.net/media/11/119190/1200/preview.jpg')">  </div>
-
+			<div class="modal-button-piano"
+				onclick="showModal('this is piano', 'https://hurtowniamuzyczna.pl/data/offer/174/17449_1200x1200.jpg')">
+			</div>
+			<div class="modal-button-notebook"
+				onclick="showModal('this is notebook', 'https://images.samsung.com/is/image/samsung/br-notebook-style-s51-pen-np930qaa-kw1br-np930qaa-kw1br-frontsilver-106383023?$PD_GALLERY_L_JPG$')">
+			</div>
 		</div>
 
 	</div>
@@ -267,22 +321,24 @@
 	<div class="button-container">
 		<div class="button-move" onclick="moveRight()">
 			<div>
-				<<
-			</div> 
-		</div> 
-		<div class="button-stop" onclick="stop()">
-			 <div>==</div> 
-		</div>
-		<div class="button-move" onclick="moveLeft()">
-			<div>
-				>>
+				<< </div> </div> <div class="button-stop" onclick="stop()">
+					<div>==</div>
+			</div>
+			<div class="button-move" onclick="moveLeft()">
+				<div>
+					>>
+				</div>
 			</div>
 		</div>
-		</div>
-		<div id="modal" class="modal">
-			<div id="modalText">MY TEXT</div>
-			<image id='modalImage' width='100' height='100' src='https://d1aeri3ty3izns.cloudfront.net/media/11/119190/1200/preview.jpg'></image>
-			<button onclick="closeModal()">Close</button>
+		<div id="modal" class="modal" onclick="closeModal()">
+			<div class="modal-in-absolute">
+					<div class="modal-in">
+							<div id="modalText" class="modal-text">MY TEXT</div>
+							<image id='modalImage' class="modal-image"
+								src='https://d1aeri3ty3izns.cloudfront.net/media/11/119190/1200/preview.jpg'></image>
+						</div>
+			</div>
+		
 		</div>
 
 </body>
